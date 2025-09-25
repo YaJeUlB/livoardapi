@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot + Thymeleaf</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1 { color: #2c3e50; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .highlight { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🌿 Thymeleaf 템플릿</h1>
+    <p>현재 시간: <span class="highlight" th:text="${currentTime}"></span></p>
+    <p>메시지: <span th:text="${message}"></span></p>
+    <ul>
+        <li><a href="/hello">텍스트 API</a></li>
+        <li><a href="/">Thymeleaf 템플릿</a></li>
+    </ul>
+</div>
+</body>
+</html>
