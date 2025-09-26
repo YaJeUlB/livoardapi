@@ -12,8 +12,12 @@ import java.util.UUID;
 @RequestMapping("/api/posts")
 public class PostController {
 
+    private final PostService postService;
+
     @Autowired
-    private PostService postService;
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @GetMapping
     public List<Post> getAllPosts() {
