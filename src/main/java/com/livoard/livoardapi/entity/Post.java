@@ -9,7 +9,12 @@ import java.util.UUID;
 public class Post {
     @Id
     @GeneratedValue
+    @Column(name = "post_id")
     private UUID id;
+
+    @GeneratedValue
+    @Column(name = "post_num")
+    private Long num;
 
     @Column
     private String title;
@@ -35,6 +40,10 @@ public class Post {
 
      */
 
+    public Long getNum() {
+        return num;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -56,6 +65,7 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "id=" + id +
+                "num=" + num +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 '}';
