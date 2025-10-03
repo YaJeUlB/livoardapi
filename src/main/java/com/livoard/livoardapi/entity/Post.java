@@ -2,6 +2,7 @@ package com.livoard.livoardapi.entity;
 
 import jakarta.persistence.*;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
@@ -16,13 +17,17 @@ public class Post {
     @Column(name = "post_num")
     private Long num;
 
-    @Column
+    @Column(length=255)
     private String title;
 
     @Column
     private String contents;
 
-    public Post() {}
+    @GeneratedValue
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt;
+
+    protected Post() {}
 
     public Post(String title, String contents) {
         this.title = title;
@@ -60,14 +65,19 @@ public class Post {
         this.contents = contents;
     }
 
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     // toString 메소드 (디버깅용)
     @Override
     public String toString() {
         return "Post{" +
                 "id=" + id +
-                "num=" + num +
+                ", num=" + num +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
+                ", created_at=" + createdAt +
                 '}';
     }
 }

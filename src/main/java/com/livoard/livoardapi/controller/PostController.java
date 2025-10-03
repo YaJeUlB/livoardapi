@@ -1,5 +1,6 @@
 package com.livoard.livoardapi.controller;
 
+import com.livoard.livoardapi.dto.*;
 import com.livoard.livoardapi.entity.Post;
 import com.livoard.livoardapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,36 +13,36 @@ import java.util.UUID;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostService service;
 
     @Autowired
-    public PostController(PostService postService) {
-        this.postService = postService;
+    public PostController(PostService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+    public List<PostResponse> getAllPosts() {
+        return service.getAllPosts();
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postService.createPost(post);
+    public PostResponse createPost(@RequestBody PostCreateRequest req) {
+        return service.createPost(req);
     }
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable UUID id) {
-        return postService.getPostById(id);
+    public PostResponse getPostById(@PathVariable UUID id) {
+        return service.getPostById(id);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable UUID id, @RequestBody Post postDetails) {
-        return postService.updatePost(id, postDetails);
+    public PostResponse updatePost(@PathVariable UUID id, @RequestBody PostUpdateRequest req) {
+        return service.updatePost(id, req);
     }
 
     @DeleteMapping("/{id}")
     public String deletePost(@PathVariable UUID id) {
-        if (postService.deletePost(id)) {
+        if (service.deletePost(id)) {
             return "게시글이 삭제되었습니다.";
         }
         return "게시글을 찾을 수 없습니다.";

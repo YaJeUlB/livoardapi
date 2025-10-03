@@ -1,44 +1,53 @@
 package com.livoard.livoardapi.service;
 
+import com.livoard.livoardapi.dto.*;
 import com.livoard.livoardapi.entity.Post;
+import com.livoard.livoardapi.mapper.PostMapper;
 import com.livoard.livoardapi.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Transactional
 public class PostService {
 
     @Autowired
-    private PostRepository postRepository;
+    private final PostRepository repo;
+    private final PostMapper mapper;
 
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public PostService(PostRepository repo, PostMapper mapper) {
+        this.repo = repo;
+        this.mapper = mapper;
     }
 
-    public Post createPost(Post post) {
-        return postRepository.save(post);
+    public List<PostResponse> getAllPosts() {
+        return mapper.toResponseList(repo.findAll());
     }
 
-    public Post getPostById(UUID id) {
-        return postRepository.findById(id).orElse(null);
+    public PostResponse createPost(PostCreateRequest req) {
+        Post post = mapper.toEntity(req);
+        Post saved = repo.save(post);
+        return mapper.toResponse(saved);
     }
 
-    public Post updatePost(UUID id, Post postDetails) {
-        Post post = postRepository.findById(id).orElse(null);
-        if (post != null) {
-            post.setTitle(postDetails.getTitle());
-            post.setContents(postDetails.getContents());
-            return postRepository.save(post);
-        }
-        return null;
+    public PostResponse getPostById(UUID id) {
+        Post post = repo.findById(id).orElse(null);
+        return mapper.toResponse(post);
     }
 
-    public boolean deletePost( UUID id) {
-        if (postRepository.existsById(id)) {
-            postRepository.deleteById(id);
+    public PostResponse updatePost(UUID id, PostUpdateRequest req) {
+        Post post = repo.findById(id).orElse(null);
+        mapper.overwrite(post, req);
+        return mapper.toResponse(post);
+    }
+
+    public boolean deletePost(UUID id) {
+        if (repo.existsById(id)) {
+            repo.deleteById(id);
             return true;
         }
         return false;
